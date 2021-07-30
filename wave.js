@@ -1,8 +1,10 @@
 export class Wave {
-    constructor(color, speed, total) {
+    constructor(color, speed, total, bottom, top) {
         this.color = color;
         this.speed = speed;
         this.total = total;
+        this.bottom = bottom;
+        this.top = top;
     }
 
     resize(seaWidth, seaHeight) {
@@ -15,7 +17,7 @@ export class Wave {
         for (let i = 0; i < this.total; i++) {
             this.points[i] = {
                 x: i * this.gap,
-                y: this.getYpos()
+                y: this.getYpos(this.bottom, this.top)
             };
         }
     }
@@ -33,12 +35,12 @@ export class Wave {
         if (cur.x > -this.gap) {
             this.points.unshift({
                 x: -(this.gap * 2),
-                y: this.getYpos()
+                y: this.getYpos(this.bottom, this.top)
             });
         } else if (cur.x > this.seaWidth + this.gap) {
             this.points.splice(-1);
         }
-        
+
         ctx.moveTo(cur.x, cur.y);
 
         let prevCx = cur.x;
@@ -55,7 +57,7 @@ export class Wave {
                 x1: prevCx,
                 y1: prevCy,
                 x2: prev.x,
-                y2:prev.y,
+                y2: prev.y,
                 x3: cx,
                 y3: cy,
             });
@@ -73,9 +75,13 @@ export class Wave {
         return dots;
     }
 
-    getYpos() {
+    getYpos(bottom, top) {
         const min = this.seaHeight / 8;
         const max = this.seaWidth - min;
-        return min + Math.random() * max;
+        return min + this.getMinMax(bottom, top) * max;
+    }
+
+    getMinMax(min, max) {
+        return Math.random() * (max - min) + min;
     }
 }

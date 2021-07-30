@@ -9,9 +9,9 @@ class App {
         document.body.appendChild(this.canvas);
 
         this.waves = [
-            new Wave('#0b57a2', 0.2, 4),
-            new Wave('#50d2f9', 0.5, 5),
-            new Wave('#4295f2', 1.4, 6),
+            new Wave('#0b57a2', 0.5, 5, 0, 0.2),
+            new Wave('#50d2f9', 0.8, 6, 0.3, 0.1),
+            new Wave('#4295f2', 1.1, 8, 0.5, 0.2),
         ];
 
         window.addEventListener('resize', this.resize.bind(this), false);
@@ -34,7 +34,7 @@ class App {
         }
     }
 
-    animate (t) {
+    animate(t) {
         requestAnimationFrame(this.animate.bind(this));
 
         this.ctx.clearRect(0, 0, this.seaWidth, this.seaHeight);
