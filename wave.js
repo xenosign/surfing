@@ -20,7 +20,6 @@ export class Wave {
                 x: i * this.gap,
                 y: this.getYpos(this.bottom, this.top)                
             };
-            console.log(this.points[i].x, this.points[i].y);
         }
     }
 

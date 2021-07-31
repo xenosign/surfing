@@ -24,6 +24,8 @@ class App {
         this.seaWidth = document.body.clientWidth;
         this.seaHeight = document.body.clientHeight;
 
+        console.log(this.seaWidth, this.seaHeight);
+
         this.canvas.width = this.seaWidth * 2;
         this.canvas.height = this.seaHeight * 2;
 
