@@ -12,13 +12,15 @@ export class Wave {
         this.seaHeight = seaHeight;
 
         this.points = [];
-        this.gap = Math.ceil(this.seaWidth / (this.total - 2));
+        this.gap = Math.ceil(this.seaWidth / (this.total - 1));
+        
 
         for (let i = 0; i < this.total; i++) {
             this.points[i] = {
                 x: i * this.gap,
-                y: this.getYpos(this.bottom, this.top),
+                y: this.getYpos(this.bottom, this.top)                
             };
+            console.log(this.points[i].x, this.points[i].y);
         }
     }
 

@@ -10,8 +10,8 @@ class App {
 
         this.waves = [
             new Wave('#0b57a2', 0.5, 5, 0, 0.2),
-            new Wave('#50d2f9', 0.8, 6, 0.3, 0.1),
-            new Wave('#4295f2', 1.1, 8, 0.5, 0.2),
+            new Wave('#50d2f9', 0.8, 6, 0.1, 0.3),
+            new Wave('#4295f2', 1.1, 8, 0.2, 0.4)
         ];
 
         window.addEventListener('resize', this.resize.bind(this), false);
