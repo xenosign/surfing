@@ -43,7 +43,6 @@ class App {
         for (let i = 0; i < this.waves.length; i++) {
             dots = this.waves[i].drawWave(this.ctx);
         }
-
     }
 }
 

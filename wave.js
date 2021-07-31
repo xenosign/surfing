@@ -17,7 +17,7 @@ export class Wave {
         for (let i = 0; i < this.total; i++) {
             this.points[i] = {
                 x: i * this.gap,
-                y: this.getYpos(this.bottom, this.top)
+                y: this.getYpos(this.bottom, this.top),
             };
         }
     }
