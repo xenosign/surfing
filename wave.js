@@ -12,7 +12,7 @@ export class Wave {
     this.seaHeight = seaHeight;
 
     this.points = [];
-    this.gap = Math.ceil(this.seaWidth / (this.total - 1));
+    this.gap = Math.ceil(this.seaWidth / (this.total - 2));
 
     for (let i = 0; i < this.total; i++) {
       this.points[i] = {
@@ -46,7 +46,7 @@ export class Wave {
     let prevCx = cur.x;
     let prevCy = cur.y;
 
-    for (let i = 0; i < this.points.length; i++) {
+    for (let i = 1; i < this.points.length; i++) {
       cur = this.points[i];
       cur.x += this.speed;
       const cx = (prev.x + cur.x) / 2;

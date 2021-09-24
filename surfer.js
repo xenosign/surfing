@@ -21,12 +21,30 @@ export class Surfer {
   }
 
   draw(ctx, t, dots) {
+    // if (!this.time) {
+    //   this.time = t;
+    // }
+
+    // const now = t - this.time;
+    // if (now > this.fpsTime) {
+    //   this.time = t;
+    //   this.curFrame += 1;
+    //   if (this.curFrame == this.totalFrame) {
+    //     this.curFrame = 0;
+    //   }
+    // }
+
+    // this.curFrame += 1;
+    // if (this.curFrame == this.totalFrame) {
+    //   this.curFrame = 0;
+    // }
+
     this.animate(ctx, dots);
   }
 
   animate(ctx, dots) {
     this.x -= this.speed;
-    var closest = this.getY(this.x, dots);
+    const closest = this.getY(this.x, dots);
     this.y = closest.y;
 
     ctx.save();
@@ -92,7 +110,7 @@ export class Surfer {
   }
 
   getQuadValue(p0, p1, p2, t) {
-    return (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 * t * t * p2;
+    return (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
   }
 
   getPointOnQuad(x1, y1, x2, y2, x3, y3, t) {
