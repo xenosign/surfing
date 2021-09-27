@@ -2,15 +2,19 @@ import { Wave } from "./wave.js";
 
 import { SurferController } from "./surfer-controlloer.js";
 
+import { Sun } from "./sun.js";
+
 class App {
   constructor() {
     this.canvas = document.createElement("canvas");
     this.ctx = this.canvas.getContext("2d");
     document.body.appendChild(this.canvas);
 
+    this.sun = new Sun();
+
     this.waves = [
-      new Wave("#0b57a2", 0.5, 5, 0, 0.5),
-      new Wave("#50d2f9", 0.8, 6, 0.1, 0.7),
+      new Wave("#0b57a2", 0.5, 5, 0.1, 0.5),
+      new Wave("#50d2f9", 0.8, 6, 0.2, 0.6),
       new Wave("#4295f2", 1.1, 8, 0.2, 0.9),
     ];
 
@@ -31,6 +35,8 @@ class App {
 
     this.ctx.scale(2, 2);
 
+    this.sun.resize(this.seaWidth, this.seaHeight);
+
     for (let i = 0; i < this.waves.length; i++) {
       this.waves[i].resize(this.seaWidth, this.seaHeight);
     }
@@ -43,10 +49,11 @@ class App {
 
     this.ctx.clearRect(0, 0, this.seaWidth, this.seaHeight);
 
+    this.sun.draw(this.ctx, t);
+
     let dots = [];
     for (let i = 0; i < this.waves.length; i++) {
       dots[i] = this.waves[i].draw(this.ctx);
-      console.log(this.waves.length);
     }
 
     this.surferController.draw(this.ctx, t, dots[2]);
