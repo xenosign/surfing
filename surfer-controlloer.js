@@ -31,7 +31,7 @@ export class SurferController {
   draw(ctx, t, dots) {
     if (this.isLoaded) {
       this.cur += 1;
-      if (this.cur > 300) {
+      if (this.cur > 350) {
         this.cur = 0;
         this.addSurfer();
       }

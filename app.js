@@ -13,9 +13,9 @@ class App {
     this.sun = new Sun();
 
     this.waves = [
-      new Wave("#0b57a2", 0.5, 5, 0.1, 0.5),
-      new Wave("#50d2f9", 0.8, 6, 0.2, 0.6),
-      new Wave("#4295f2", 1.1, 8, 0.2, 0.9),
+      new Wave("#0b57a2", 0.5, 6, 0.1, 0.5),
+      new Wave("#50d2f9", 1.0, 8, 0.2, 0.7),
+      new Wave("#4295f2", 1.5, 10, 0.3, 0.9),
     ];
 
     this.surferController = new SurferController();
