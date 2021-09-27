@@ -43,12 +43,13 @@ class App {
 
     this.ctx.clearRect(0, 0, this.seaWidth, this.seaHeight);
 
-    let dots;
+    let dots = [];
     for (let i = 0; i < this.waves.length; i++) {
-      dots = this.waves[i].draw(this.ctx);
+      dots[i] = this.waves[i].draw(this.ctx);
+      console.log(this.waves.length);
     }
 
-    this.surferController.draw(this.ctx, t, dots);
+    this.surferController.draw(this.ctx, t, dots[2]);
   }
 }
 
