@@ -2,7 +2,7 @@ export class Surfer {
   constructor(img, seaWidth) {
     this.img = img;
 
-    this.totalFrame = 8;
+    //this.totalFrame = 8;
     this.curFrame = 0;
 
     this.imgWidth = 344;
@@ -16,8 +16,8 @@ export class Surfer {
     this.y = 0;
     this.speed = Math.random() * 2 + 1;
 
-    this.fps = 24;
-    this.fpsTime = 1000 / this.fps;
+    //this.fps = 24;
+    //this.fpsTime = 1000 / this.fps;
   }
 
   draw(ctx, t, dots) {
