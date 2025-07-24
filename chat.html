@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>채팅 테스트</title>
+  </head>
+  <body>
+    <h2>챌린지 채팅방 테스트</h2>
+    <p>현재 채팅방: 챌린지 <span id="challengeIdDisplay">?</span>번</p>
+
+    <label>유저 ID: <input type="text" id="userId" value="100" /></label>
+    <label>챌린지 ID: <input type="text" id="challengeId" value="1" /></label>
+    <button onclick="connect()">연결</button>
+    <button onclick="disconnect()">연결 해제</button>
+
+    <br /><br />
+
+    <div>현재 접속자: <span id="userCount">0</span>명</div>
+
+    <br />
+
+    <input type="text" id="messageInput" placeholder="메시지를 입력하세요" />
+    <button onclick="sendMessage()">전송</button>
+
+    <hr />
+    <h4>메시지 로그:</h4>
+    <div
+      id="chat"
+      style="
+        white-space: pre-line;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 90%;
+        height: 300px;
+        overflow-y: scroll;
+      "
+    ></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script>
+      let stompClient = null;
+      let subscription = null;
+
+      function connect() {
+        const socket = new SockJS('http://localhost:8080/ws/chat');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function () {
+          const userId = document.getElementById('userId').value;
+          const challengeId = document.getElementById('challengeId').value;
+          document.getElementById('challengeIdDisplay').textContent =
+            challengeId;
+
+          // 메시지 구독
+          subscription = stompClient.subscribe(
+            '/topic/chat/' + challengeId,
+            function (message) {
+              const msg = JSON.parse(message.body);
+              console.log('받은 메시지:', msg);
+              showMessage(msg);
+            }
+          );
+
+          // 접속자 수 구독 추가
+          stompClient.subscribe(
+            '/topic/userCount/' + challengeId,
+            function (message) {
+              const count = JSON.parse(message.body);
+              document.getElementById('userCount').textContent = count;
+            }
+          );
+
+          // 입장 알림
+          stompClient.send(
+            '/app/chat/' + challengeId + '/join',
+            {},
+            JSON.stringify({
+              userId: userId,
+              challengeId: challengeId,
+              messageType: 'ENTER',
+            })
+          );
+        });
+      }
+
+      function disconnect() {
+        if (stompClient && stompClient.connected) {
+          console.log('연결 해제 중...');
+          stompClient.disconnect(function () {
+            console.log('연결 해제 완료');
+          });
+        }
+      }
+
+      function sendMessage() {
+        const userId = document.getElementById('userId').value;
+        const challengeId = document.getElementById('challengeId').value;
+        const message = document.getElementById('messageInput').value;
+
+        if (message.trim() === '') return;
+
+        stompClient.send(
+          '/app/chat/' + challengeId + '/send',
+          {},
+          JSON.stringify({
+            userId: userId,
+            challengeId: challengeId,
+            message: message,
+            messageType: 'MESSAGE',
+          })
+        );
+        document.getElementById('messageInput').value = '';
+      }
+
+      function showMessage(msg) {
+        const chatDiv = document.getElementById('chat');
+        const time = new Date().toLocaleTimeString();
+        let log = '[' + time + '] ';
+
+        const messageType = msg.messageType || 'UNKNOWN';
+        console.log('메시지 타입:', messageType, '전체 메시지:', msg);
+
+        if (messageType === 'SYSTEM') {
+          log += '🔔 ' + msg.message;
+        } else if (messageType === 'ENTER') {
+          log += '🔔 사용자' + msg.userId + '님이 입장했습니다.';
+        } else if (messageType === 'LEAVE') {
+          log += '👋 사용자' + msg.userId + '님이 퇴장했습니다.';
+        } else if (messageType === 'MESSAGE') {
+          log += '[' + msg.userName + '] ' + msg.message;
+        } else {
+          log +=
+            '[알 수 없는 타입: ' + messageType + '] ' + (msg.message || '');
+        }
+
+        chatDiv.textContent += log + '\\n';
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
